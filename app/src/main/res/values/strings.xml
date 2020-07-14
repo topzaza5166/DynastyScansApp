@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DynastyReader</string>
+
+    <string name="detail">Details</string>
+    <string name="copied">คัดลอกแล้ว</string>
+
+</resources>
