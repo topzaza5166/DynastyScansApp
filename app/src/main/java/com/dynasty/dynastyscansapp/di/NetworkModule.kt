@@ -1,14 +1,11 @@
 package com.dynasty.dynastyscansapp.di
 
-import android.content.Context
 import com.dynasty.dynastyscansapp.BuildConfig
-import com.dynasty.dynastyscansapp.data.ServiceApi
+import com.dynasty.dynastyscansapp.data.api.ServiceApi
 import com.dynasty.dynastyscansapp.data.repository.ServiceRepository
 import com.dynasty.dynastyscansapp.data.repository.ServiceRepositoryImpl
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

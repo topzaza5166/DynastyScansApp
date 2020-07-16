@@ -3,16 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp">
+    android:layout_height="match_parent">
 
     <com.jsibbold.zoomage.ZoomageView
         android:id="@+id/imgPage"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="3:4"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="match_parent"
         app:zoomage_doubleTapToZoom="false" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

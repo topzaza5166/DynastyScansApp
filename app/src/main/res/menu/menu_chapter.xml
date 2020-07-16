@@ -3,8 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/share"
+        android:title="@string/share"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/browser"
+        android:title="@string/open_browser"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/mode"
+        android:title="@string/switch_mode"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/detail"
         android:title="@string/detail"
         app:showAsAction="never" />
+
 
 </menu>

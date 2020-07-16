@@ -3,5 +3,8 @@
 
     <string name="detail">Details</string>
     <string name="copied">คัดลอกแล้ว</string>
+    <string name="share">Share</string>
+    <string name="open_browser">Open Browser</string>
+    <string name="switch_mode">Switch Mode</string>
 
 </resources>

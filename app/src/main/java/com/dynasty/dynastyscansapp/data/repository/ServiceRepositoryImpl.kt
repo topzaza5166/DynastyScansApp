@@ -3,9 +3,9 @@ package com.dynasty.dynastyscansapp.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.dynasty.dynastyscansapp.data.Resource
-import com.dynasty.dynastyscansapp.data.ServiceApi
+import com.dynasty.dynastyscansapp.data.api.ServiceApi
 import com.dynasty.dynastyscansapp.data.model.ChapterListModel
-import com.dynasty.dynastyscansapp.data.model.ChapterModel
+import com.dynasty.dynastyscansapp.data.model.ChapterDetailModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
@@ -27,8 +27,7 @@ class ServiceRepositoryImpl(
         }
     }
 
-
-    override fun getChapter(title: String): LiveData<Resource<ChapterModel>> = liveData {
+    override fun getChapter(title: String): LiveData<Resource<ChapterDetailModel>> = liveData {
         emit(Resource.loading())
         try {
             val response = withContext(Dispatchers.IO) {

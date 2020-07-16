@@ -1,20 +1,38 @@
 package com.dynasty.dynastyscansapp.ui.chapterlist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.dynasty.dynastyscansapp.data.Resource
+import com.dynasty.dynastyscansapp.data.api.ServiceApi
+import com.dynasty.dynastyscansapp.data.datasource.ChapterDataSource
+import com.dynasty.dynastyscansapp.data.datasource.ChapterDataSourceFactory
 import com.dynasty.dynastyscansapp.data.model.ChapterListModel
+import com.dynasty.dynastyscansapp.data.model.ChapterModel
 import com.dynasty.dynastyscansapp.data.repository.ServiceRepository
+import kotlinx.coroutines.Dispatchers
 
-class ChapterListViewModel(private val repository: ServiceRepository) : ViewModel() {
+class ChapterListViewModel(service: ServiceApi, private val repository: ServiceRepository) : ViewModel() {
 
-    val resource: LiveData<Resource<ChapterListModel>> by lazy {
-        repository.getChapterList()
-    }
+    private val pageSize = 25
 
-    val chapterList: LiveData<List<ChapterListModel.Chapter>?> = Transformations.map(resource) {
-        if (it.isSuccess()) it.data?.chapters else null
+    val resource: MutableLiveData<Resource<ChapterListModel>> = MutableLiveData()
+
+    var chaptersList: LiveData<PagedList<ChapterModel>>
+
+    var dataSourceFactory: ChapterDataSourceFactory
+
+    init {
+        val config = PagedList.Config.Builder()
+            .setPageSize(pageSize)
+            .setInitialLoadSizeHint(pageSize * 2)
+            .setEnablePlaceholders(true)
+            .build()
+
+        dataSourceFactory = ChapterDataSourceFactory(viewModelScope.coroutineContext, service, resource)
+
+        chaptersList = LivePagedListBuilder<Int, ChapterModel>(dataSourceFactory, config).build()
     }
 
 }
