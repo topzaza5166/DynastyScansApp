@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.dynasty.dynastyscansapp.R
 import com.dynasty.dynastyscansapp.data.api.ServiceApi
 import com.dynasty.dynastyscansapp.data.model.ChapterModel
+import com.dynasty.dynastyscansapp.data.repository.ServiceRepository
+import com.dynasty.dynastyscansapp.data.repository.ServiceRepositoryImpl
 import com.dynasty.dynastyscansapp.databinding.FragmentChapterListBinding
 import com.dynasty.dynastyscansapp.ui.chapter.ChapterActivity
 import com.wada811.databinding.dataBinding
@@ -21,10 +23,10 @@ class ChapterListFragment : Fragment(R.layout.fragment_chapter_list) {
 
     private val binding: FragmentChapterListBinding by dataBinding()
 
-    private val api: ServiceApi by inject()
+    private val repository: ServiceRepository by inject()
 
     private val chapterAdapter: ChapterListAdapter by lazy {
-        ChapterListAdapter(viewLifecycleOwner.lifecycleScope.coroutineContext, api) { chapter ->
+        ChapterListAdapter(this, repository) { chapter ->
             chapter?.let {
                 startActivity(ChapterActivity.getIntent(requireContext(), chapter))
             }

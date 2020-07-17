@@ -13,13 +13,12 @@ import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.dynasty.dynastyscansapp.BuildConfig
 import com.dynasty.dynastyscansapp.R
-import com.dynasty.dynastyscansapp.data.model.ChapterDetailModel
+import com.dynasty.dynastyscansapp.data.entity.Chapter
 import com.dynasty.dynastyscansapp.data.model.PageModel
 import com.dynasty.dynastyscansapp.databinding.FragmentChapterBinding
 import com.dynasty.dynastyscansapp.ui.chapter.ChapterViewModel.*
 import com.wada811.databinding.dataBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 
@@ -65,7 +64,7 @@ class ChapterFragment : Fragment(R.layout.fragment_chapter) {
         }
 
         binding.recyclerView.addOnScrollListener(
-            RecyclerViewPreloader<ChapterDetailModel>(
+            RecyclerViewPreloader<Chapter>(
                 Glide.with(this),
                 preloadModelProvider,
                 ViewPreloadSizeProvider(),
@@ -104,13 +103,13 @@ class ChapterFragment : Fragment(R.layout.fragment_chapter) {
         }
     }
 
-    private val preloadModelProvider = object : ListPreloader.PreloadModelProvider<ChapterDetailModel> {
-        override fun getPreloadItems(position: Int): MutableList<ChapterDetailModel> =
+    private val preloadModelProvider = object : ListPreloader.PreloadModelProvider<Chapter> {
+        override fun getPreloadItems(position: Int): MutableList<Chapter> =
             viewModel.chapter.value?.let {
                 Collections.singletonList(it)
             } ?: Collections.emptyList()
 
-        override fun getPreloadRequestBuilder(item: ChapterDetailModel): RequestBuilder<*>? =
+        override fun getPreloadRequestBuilder(item: Chapter): RequestBuilder<*>? =
             Glide.with(requireContext())
                 .load("${BuildConfig.BASE_URL}${item.pages?.get(0)?.url}")
     }

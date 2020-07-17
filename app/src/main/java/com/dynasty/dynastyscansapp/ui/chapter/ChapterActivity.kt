@@ -11,7 +11,7 @@ import androidx.core.view.GestureDetectorCompat
 import androidx.lifecycle.lifecycleScope
 import com.dynasty.dynastyscansapp.R
 import com.dynasty.dynastyscansapp.data.TagType
-import com.dynasty.dynastyscansapp.data.model.ChapterDetailModel
+import com.dynasty.dynastyscansapp.data.entity.Chapter
 import com.dynasty.dynastyscansapp.utils.hide
 import com.dynasty.dynastyscansapp.utils.show
 import kotlinx.android.synthetic.main.activity_chapter.*
@@ -25,7 +25,7 @@ class ChapterActivity : AppCompatActivity(R.layout.activity_chapter) {
 
     private val mDetector: GestureDetectorCompat by lazy {
         GestureDetectorCompat(this, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
                 toggleToolbar()
                 return true
             }
@@ -36,7 +36,7 @@ class ChapterActivity : AppCompatActivity(R.layout.activity_chapter) {
 
         const val EXTRA_CHAPTER = "extra_chapter"
 
-        fun getIntent(context: Context, chapter: ChapterDetailModel) =
+        fun getIntent(context: Context, chapter: Chapter) =
             Intent(context, ChapterActivity::class.java).apply {
                 putExtra(EXTRA_CHAPTER, chapter)
             }
@@ -46,7 +46,7 @@ class ChapterActivity : AppCompatActivity(R.layout.activity_chapter) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
 
-        intent?.extras?.getParcelable<ChapterDetailModel>(EXTRA_CHAPTER)?.let {
+        intent?.extras?.getParcelable<Chapter>(EXTRA_CHAPTER)?.let {
             viewModel.chapter.value = it
         } ?: finish()
 

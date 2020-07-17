@@ -3,6 +3,8 @@ package com.dynasty.dynastyscansapp.ui.chapterlist
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,23 +12,18 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.dynasty.dynastyscansapp.BuildConfig
 import com.dynasty.dynastyscansapp.R
-import com.dynasty.dynastyscansapp.data.api.ServiceApi
-import com.dynasty.dynastyscansapp.data.model.ChapterDetailModel
+import com.dynasty.dynastyscansapp.data.entity.Chapter
 import com.dynasty.dynastyscansapp.data.model.ChapterModel
+import com.dynasty.dynastyscansapp.data.repository.ServiceRepository
 import com.dynasty.dynastyscansapp.databinding.ViewListChapterBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.CoroutineContext
 
 class ChapterListAdapter(
-    override val coroutineContext: CoroutineContext,
-    private val api: ServiceApi,
-    private val listener: ((chapter: ChapterDetailModel?) -> Unit)? = null
-) : PagedListAdapter<ChapterModel, ChapterListAdapter.ViewHolder>(DiffCallback), CoroutineScope {
+    private val fragment: Fragment,
+    private val repository: ServiceRepository,
+    private val listener: ((chapter: Chapter?) -> Unit)? = null
+) : PagedListAdapter<ChapterModel, ChapterListAdapter.ViewHolder>(DiffCallback) {
 
-    private val chapterList: MutableMap<Int, ChapterDetailModel> = mutableMapOf()
+    private val chapterList: MutableMap<Int, Chapter> = mutableMapOf()
 
     companion object {
         val DiffCallback = object : DiffUtil.ItemCallback<ChapterModel>() {
@@ -77,17 +74,17 @@ class ChapterListAdapter(
         }
 
         private fun String.getImageUrl(position: Int) {
-            launch {
-                val chapter = withContext(Dispatchers.IO) {
-                    api.getChapter(this@getImageUrl)
-                }
-
-                chapterList[position] = chapter
-                binding.preview.loadImage(chapter)
-            }
+            repository.getChapter(this@getImageUrl)
+                .observe(fragment.viewLifecycleOwner, Observer { response ->
+                    if (response.isSuccess())
+                        response.data?.let { chapter ->
+                            chapterList[position] = chapter
+                            binding.preview.loadImage(chapter)
+                        }
+                })
         }
 
-        private fun ImageView.loadImage(chapter: ChapterDetailModel) {
+        private fun ImageView.loadImage(chapter: Chapter) {
             chapter.pages?.get(0)?.url?.let {
                 Glide.with(context)
                     .load("${BuildConfig.BASE_URL}$it")

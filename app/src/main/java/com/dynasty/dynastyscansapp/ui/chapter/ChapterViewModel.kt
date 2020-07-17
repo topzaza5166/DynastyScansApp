@@ -1,9 +1,8 @@
 package com.dynasty.dynastyscansapp.ui.chapter
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dynasty.dynastyscansapp.data.model.ChapterDetailModel
+import com.dynasty.dynastyscansapp.data.entity.Chapter
 
 class ChapterViewModel : ViewModel() {
 
@@ -11,7 +10,7 @@ class ChapterViewModel : ViewModel() {
         HORIZONTAL, VERTICAL
     }
 
-    val chapter: MutableLiveData<ChapterDetailModel> = MutableLiveData()
+    val chapter: MutableLiveData<Chapter> = MutableLiveData()
 
     val mode: MutableLiveData<ViewMode> = MutableLiveData(ViewMode.HORIZONTAL)
 

@@ -12,7 +12,6 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.dynasty.dynastyscansapp.R
-import com.dynasty.dynastyscansapp.data.model.ChapterDetailModel
 import com.dynasty.dynastyscansapp.databinding.DialogChapterDetailBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog

@@ -18,8 +18,6 @@ val networkModule = module {
 
     single { provideApiService(get()) }
 
-    factory { provideRepository(get()) }
-
 }
 
 fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
@@ -36,6 +34,3 @@ fun provideRetrofit(okHttp: OkHttpClient): Retrofit = Retrofit.Builder()
 
 fun provideApiService(retrofit: Retrofit): ServiceApi =
     retrofit.create(ServiceApi::class.java)
-
-fun provideRepository(api: ServiceApi): ServiceRepository =
-    ServiceRepositoryImpl(api)

@@ -9,7 +9,7 @@
 
         <variable
             name="chapter"
-            type="com.dynasty.dynastyscansapp.data.model.ChapterDetailModel" />
+            type="com.dynasty.dynastyscansapp.data.entity.Chapter" />
     </data>
 
     <LinearLayout

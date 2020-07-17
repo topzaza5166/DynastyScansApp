@@ -7,12 +7,11 @@
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp">
 
-    <com.jsibbold.zoomage.ZoomageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/imgPage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="3:4"
-        app:layout_constraintTop_toTopOf="parent"
-        app:zoomage_doubleTapToZoom="false" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
