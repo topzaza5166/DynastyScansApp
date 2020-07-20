@@ -20,7 +20,7 @@ import com.dynasty.dynastyscansapp.databinding.ViewListChapterBinding
 class ChapterListAdapter(
     private val fragment: Fragment,
     private val repository: ServiceRepository,
-    private val listener: ((chapter: Chapter?) -> Unit)? = null
+    private val listener: ((chapter: ChapterModel?) -> Unit)? = null
 ) : PagedListAdapter<ChapterModel, ChapterListAdapter.ViewHolder>(DiffCallback) {
 
     private val chapterList: MutableMap<Int, Chapter> = mutableMapOf()
@@ -61,7 +61,7 @@ class ChapterListAdapter(
                 } ?: item.permalink?.getImageUrl(position)
 
                 itemView.setOnClickListener {
-                    listener?.invoke(chapterList[position])
+                    listener?.invoke(item)
                 }
             }
 

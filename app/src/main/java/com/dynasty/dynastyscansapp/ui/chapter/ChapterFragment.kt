@@ -48,17 +48,12 @@ class ChapterFragment : Fragment(R.layout.fragment_chapter) {
         viewModel.apply {
             mode.observe(viewLifecycleOwner, Observer {
                 chapter.value?.pages?.let { pages ->
-                    getCurrentPosition()
-                    when (it) {
-                        ViewMode.HORIZONTAL -> {
-                            initRecyclerViewHorizontal(pages)
-                        }
-                        ViewMode.VERTICAL -> {
-                            initRecyclerViewVertical(pages)
-                        }
-                        else -> {
-                        }
-                    }
+                    initRecyclerView(it, pages)
+                }
+            })
+            chapter.observe(viewLifecycleOwner, Observer {
+                it?.pages?.let { pages ->
+                    initRecyclerView(mode.value, pages)
                 }
             })
         }
@@ -71,6 +66,20 @@ class ChapterFragment : Fragment(R.layout.fragment_chapter) {
                 10
             )
         )
+    }
+
+    private fun initRecyclerView(mode: ViewMode?, pages: List<PageModel>) {
+        getCurrentPosition()
+        when (mode) {
+            ViewMode.HORIZONTAL -> {
+                initRecyclerViewHorizontal(pages)
+            }
+            ViewMode.VERTICAL -> {
+                initRecyclerViewVertical(pages)
+            }
+            else -> {
+            }
+        }
     }
 
     private fun getCurrentPosition() {

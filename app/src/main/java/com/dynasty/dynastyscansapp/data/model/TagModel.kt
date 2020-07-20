@@ -11,5 +11,7 @@ data class TagModel(
     @SerializedName("permalink")
     val permalink: String?,
     @SerializedName("type")
-    val type: String?
+    val type: String?,
+    @SerializedName("cover")
+    val cover: String?
 ) : Parcelable

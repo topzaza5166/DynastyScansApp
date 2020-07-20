@@ -15,6 +15,12 @@ class ServiceRepositoryImpl(
     private val dao: ChapterDao
 ) : ServiceRepository {
 
+    override suspend fun getChapterList(page: Int): ChapterListModel {
+        return withContext(Dispatchers.IO) {
+            api.getChapterList(page.toString())
+        }
+    }
+
     override fun getChapterList(): LiveData<Resource<ChapterListModel>> = liveData {
         emit(Resource.loading())
         try {
@@ -28,17 +34,17 @@ class ServiceRepositoryImpl(
         }
     }
 
-    override fun getChapter(title: String): LiveData<Resource<Chapter>> = liveData {
+    override fun getChapter(link: String): LiveData<Resource<Chapter>> = liveData {
         emit(Resource.loading())
         try {
             val chapter = withContext(Dispatchers.IO) {
-                dao.findByLink(title)
+                dao.findByLink(link)
             }
             if (chapter != null) {
                 emit(Resource.success(chapter))
             } else {
                 val response = withContext(Dispatchers.IO) {
-                    api.getChapter(title)
+                    api.getChapter(link)
                 }
                 dao.insertChapter(response)
                 emit(Resource.success(response))

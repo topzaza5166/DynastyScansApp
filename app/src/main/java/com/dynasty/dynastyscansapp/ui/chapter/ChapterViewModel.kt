@@ -1,6 +1,8 @@
 package com.dynasty.dynastyscansapp.ui.chapter
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.dynasty.dynastyscansapp.data.entity.Chapter
 

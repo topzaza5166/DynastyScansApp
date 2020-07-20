@@ -13,7 +13,7 @@ import com.dynasty.dynastyscansapp.data.model.ChapterModel
 import com.dynasty.dynastyscansapp.data.repository.ServiceRepository
 import kotlinx.coroutines.Dispatchers
 
-class ChapterListViewModel(service: ServiceApi) : ViewModel() {
+class ChapterListViewModel(repository: ServiceRepository) : ViewModel() {
 
     private val pageSize = 25
 
@@ -30,7 +30,7 @@ class ChapterListViewModel(service: ServiceApi) : ViewModel() {
             .setEnablePlaceholders(true)
             .build()
 
-        dataSourceFactory = ChapterDataSourceFactory(viewModelScope.coroutineContext, service, resource)
+        dataSourceFactory = ChapterDataSourceFactory(viewModelScope.coroutineContext, repository, resource)
 
         chaptersList = LivePagedListBuilder<Int, ChapterModel>(dataSourceFactory, config).build()
     }

@@ -1,6 +1,7 @@
 package com.dynasty.dynastyscansapp.data.model
 
 
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 data class ChapterListModel(

@@ -8,20 +8,27 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.dynasty.dynastyscansapp.R
+import com.dynasty.dynastyscansapp.data.Resource
 import com.dynasty.dynastyscansapp.data.TagType
 import com.dynasty.dynastyscansapp.data.entity.Chapter
+import com.dynasty.dynastyscansapp.data.model.ChapterModel
+import com.dynasty.dynastyscansapp.data.repository.ServiceRepository
 import com.dynasty.dynastyscansapp.utils.hide
 import com.dynasty.dynastyscansapp.utils.show
 import kotlinx.android.synthetic.main.activity_chapter.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ChapterActivity : AppCompatActivity(R.layout.activity_chapter) {
 
     private val viewModel: ChapterViewModel by viewModel()
+
+    private val repository: ServiceRepository by inject()
 
     private val mDetector: GestureDetectorCompat by lazy {
         GestureDetectorCompat(this, object : GestureDetector.SimpleOnGestureListener() {
@@ -36,7 +43,7 @@ class ChapterActivity : AppCompatActivity(R.layout.activity_chapter) {
 
         const val EXTRA_CHAPTER = "extra_chapter"
 
-        fun getIntent(context: Context, chapter: Chapter) =
+        fun getIntent(context: Context, chapter: ChapterModel) =
             Intent(context, ChapterActivity::class.java).apply {
                 putExtra(EXTRA_CHAPTER, chapter)
             }
@@ -46,15 +53,18 @@ class ChapterActivity : AppCompatActivity(R.layout.activity_chapter) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
 
-        intent?.extras?.getParcelable<Chapter>(EXTRA_CHAPTER)?.let {
-            viewModel.chapter.value = it
+        intent?.extras?.getParcelable<ChapterModel>(EXTRA_CHAPTER)?.permalink?.let {
+            repository.getChapter(it).observe(this, Observer { resources ->
+                if (resources.isSuccess()) {
+                    progressBar.visibility = View.GONE
+                    viewModel.chapter.value = resources.data?.apply {
+                        supportActionBar?.title = getTag(TagType.Series)?.name ?: title
+                    }
+                }
+            })
         } ?: finish()
 
         supportActionBar?.apply {
-            title = viewModel.chapter.value?.run {
-                getTag(TagType.Series)?.name ?: title
-            }
-
             setHomeButtonEnabled(true)
             setDisplayHomeAsUpEnabled(true)
         }
